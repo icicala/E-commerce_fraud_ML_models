@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Feature Creation') {
             steps {
-                sh 'python --version && python main.py'
+                sh 'python3 --version && python main.py'
             }
         }
         // Add more stages
