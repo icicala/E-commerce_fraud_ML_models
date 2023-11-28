@@ -1,11 +1,17 @@
 pipeline {
     agent any
     stages {
-        stage('Feature Creation') {
+        stage('Install dependencies') {
             steps {
-                sh 'python3 --version && python3 main.py'
+                sh 'pip install -r requirements.txt'
             }
         }
-        // Add more stages
+        stage('Feature Creation') {
+            steps {
+                script {
+                    sh 'python3 main.py'
+                }
+            }
+        }
     }
 }
