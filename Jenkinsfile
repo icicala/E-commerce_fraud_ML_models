@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Feature Creation') {
             steps {
-                sh 'source PycharmProjects/eFraud_ML/venv/bin/activate && python3 PycharmProjects/eFraud_ML/main.py'
+                sh 'source /home/icicala/PycharmProjects/eFraud_ML/venv/bin/activate && /home/icicala/PycharmProjects/eFraud_ML/main.py'
             }
         }
         // Add more stages
