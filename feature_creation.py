@@ -87,6 +87,7 @@ class Feature_Creation:
         data_time = self._time_differences(data_country)
         data_purchase = self._purchase_time(data_time)
         data_freq = self._device_id_count(data_purchase)
+
         data_country_count = self._country_count(data_freq)
         final_data = self._drop_clean_data(data_country_count)
 
