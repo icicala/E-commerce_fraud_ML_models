@@ -3,10 +3,7 @@ pipeline {
     stages {
         stage('Feature Creation') {
             steps {
-                sh '''
-                /home/icicala/PycharmProjects/eFraud_ML/venv/bin
-                python3 /home/icicala/PycharmProjects/eFraud_ML/main.py
-                '''
+                sh 'python --version && python main.py'
             }
         }
         // Add more stages
