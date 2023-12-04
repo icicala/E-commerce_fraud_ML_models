@@ -2,6 +2,7 @@ pipeline {
     agent {
         docker {
             image 'python:3.11'
+            args '-u root'
         }
     }
 
@@ -9,8 +10,8 @@ pipeline {
         stage('Run Python Script') {
             steps {
                 script {
-                    sh 'sudo pip3 install -r requirements.txt --user'
-                    sh 'sudo python3 main.py'
+                    sh 'pip3 install -r requirements.txt --user'
+                    sh 'python3 main.py'
                 }
             }
         }
