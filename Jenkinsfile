@@ -6,7 +6,6 @@ pipeline {
             args '-v /home/icicala/PycharmProjects/output:/app/output'
         }
     }
-
     stages {
         stage('Setup') {
             steps {

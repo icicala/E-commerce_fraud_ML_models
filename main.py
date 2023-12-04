@@ -8,6 +8,7 @@ from feature_creation import Feature_Creation
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
+
     data_path = os.path.join(os.getcwd(), "Fraud_Data.csv")
     ip_path = os.path.join(os.getcwd(), "IpAddress_to_Country.csv")
     final_url = os.path.join(os.getcwd(), "output/EFraud_data.csv")
