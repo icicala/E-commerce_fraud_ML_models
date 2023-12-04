@@ -1,37 +1,16 @@
 pipeline {
     agent {
         docker {
-            image 'python:3.11'
-            // Mount a volume
-            args '-v /home/icicala/PycharmProjects/output:/app/output'
+            image 'python:3.9'
+            args '-v /home/jenkins_home:/var/jenkins_home -v /var/jenkins_home/workspace/_commerce_fraud_ML_models_master:/app'
         }
     }
+
     stages {
-        stage('Setup') {
+        stage('Python and Pip') {
             steps {
-                // Install pip
-                sh 'apt-get install -y python3-pip'
-            }
-        }
-
-        stage('Install Dependencies') {
-            steps {
-                // Run pip to install dependencies from requirements.txt
-                sh 'pip3 install -r requirements.txt'
-            }
-        }
-
-        stage('Run Python Scripts') {
-            steps {
-                // Run Python scripts within the Docker container
-                sh 'python main.py'
-            }
-        }
-
-        stage('Save Output') {
-            steps {
-                // Copy output files to a mounted volume accessible from the host
-                sh 'cp -r . /app/output'
+                sh 'python --version' // Check Python version
+                sh 'pip --version'    // Check Pip version
             }
         }
     }
