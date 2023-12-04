@@ -3,7 +3,10 @@ pipeline {
     stages {
         stage('Install dependencies') {
             steps {
-                sh 'pip install -r requirements.txt'
+                // activate conda enviroment
+                sh 'conda activate mlenv'
+                // install dependencies from requirements file
+                sh 'conda install --file requirements.txt'
             }
         }
         stage('Feature Creation') {
