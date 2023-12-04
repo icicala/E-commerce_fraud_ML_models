@@ -10,7 +10,7 @@ pipeline {
             steps {
                 script {
 
-                    sh 'python main.py'
+                    sh 'python3 main.py'
                 }
             }
         }
