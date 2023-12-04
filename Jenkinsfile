@@ -1,10 +1,13 @@
 pipeline {
     agent any
     stages {
-        stage('Install dependencies') {
+        stage('Activate Environment and Install Dependencies') {
             steps {
                 // Activate conda environment and install dependencies
-                sh '/opt/anaconda3/bin/conda activate mlenv && /opt/anaconda3/bin/conda install --file requirements.txt'
+                sh '''
+                    source /opt/anaconda3/bin/activate mlenv
+                    conda install --file requirements.txt
+                '''
             }
         }
         stage('Feature Creation') {
