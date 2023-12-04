@@ -1,19 +1,10 @@
 pipeline {
     agent any
     stages {
-        stage('Set Anaconda Path') {
-            steps {
-                script {
-                    // Add Anaconda path to PATH for all subsequent steps
-                    withEnv(["PATH=/opt/anaconda3/condabin/:$PATH"]) {
-                    }
-                }
-            }
-        }
         stage('Install dependencies') {
             steps {
                 // Activate conda environment and install dependencies
-                sh 'conda activate mlenv && conda install --file requirements.txt'
+                sh '/opt/anaconda3/bin/conda activate mlenv && /opt/anaconda3/bin/conda install --file requirements.txt'
             }
         }
         stage('Feature Creation') {
