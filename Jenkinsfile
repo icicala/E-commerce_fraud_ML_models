@@ -6,10 +6,12 @@ pipeline {
     }
 
     stages {
-        stage('Python and Pip') {
+        stage('Run Python Script') {
             steps {
-                sh 'python3 --version' // Check Python version
-                sh 'pip3 --version'    // Check Pip version
+                script {
+
+                    sh 'python main.py'
+                }
             }
         }
     }
