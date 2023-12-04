@@ -1,19 +1,38 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'python:3.11'
+            // Mount a volume
+            args '-v /home/icicala/PycharmProjects/output:/app/output'
+        }
+    }
+
     stages {
-        stage('Activate Environment and Install Dependencies') {
+        stage('Setup') {
             steps {
-                // Activate conda environment and install dependencies
-                sh '''
-                    source /opt/anaconda3/bin/activate mlenv
-                    conda install --file requirements.txt
-                '''
+                // Install pip
+                sh 'apt-get update && apt-get install -y python3-pip'
             }
         }
-        stage('Feature Creation') {
+
+        stage('Install Dependencies') {
             steps {
-                // Run Python script
-                sh 'python3 main.py'
+                // Run pip to install dependencies from requirements.txt
+                sh 'pip3 install -r requirements.txt'
+            }
+        }
+
+        stage('Run Python Scripts') {
+            steps {
+                // Run Python scripts within the Docker container
+                sh 'python main.py'
+            }
+        }
+
+        stage('Save Output') {
+            steps {
+                // Copy output files to a mounted volume accessible from the host
+                sh 'cp -r . /app/output'
             }
         }
     }
