@@ -7,7 +7,7 @@ pipeline {
     }
 
     stages {
-        stage('Run Python Script') {
+        stage('Feature Creation) {
             steps {
                 script {
                     sh 'pip3 install -r requirements.txt --user'
