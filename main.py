@@ -13,7 +13,7 @@ if __name__ == '__main__':
     final_url = os.path.join(os.getcwd(), "output/EFraud_data.csv")
     features = Feature_Creation(data_path, ip_path)
     final_data = features.process_data()
-    print(final_data)
+    print(final_url)
     # final_data.to_csv(final_url, index=False)
 
 
