@@ -6,7 +6,7 @@ pipeline {
         }
     }
     stages {
-        stage('Install Ml Libraries') {
+        stage('Install ML Libraries') {
         steps {
             script {
                 sh 'pip3 install -r requirements.txt --user'
