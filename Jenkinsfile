@@ -5,13 +5,12 @@ pipeline {
             args '-u root'
         }
     }
-
     stages {
         stage('Feature Creation) {
             steps {
                 script {
                     sh 'pip3 install -r requirements.txt --user'
-                    sh 'python3 main.py'
+                    sh 'python3 feature_creation.py'
                 }
             }
         }
