@@ -6,14 +6,12 @@ pipeline {
         }
     }
     stages {
-        stage('Feature Creation) {
+        stage('Feature Creation') {
             steps {
                 script {
-                '''
                     sh 'pip3 install -r requirements.txt --user'
                     sh 'python3 feature_creation.py'
                     sh 'chown jenkins:jenkins EFraud_data.csv'
-                '''
                 }
             }
         }
