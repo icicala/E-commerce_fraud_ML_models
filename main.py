@@ -14,7 +14,7 @@ if __name__ == '__main__':
     features = Feature_Creation(data_path, ip_path)
     final_data = features.process_data()
     print(final_url)
-    # final_data.to_csv(final_url, index=False)
+    final_data.to_csv(final_url, index=False)
 
 
 
