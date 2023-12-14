@@ -5,6 +5,7 @@ from intervaltree import IntervalTree
 from pandas import DataFrame
 
 
+
 class Feature_Creation:
 
     def __init__(self, data_url, ip_url):
@@ -66,16 +67,8 @@ class Feature_Creation:
         data_fraud['second_purchase'] = data_fraud['purchase_time'].dt.second
         return data_fraud
 
-    def _device_id_count(self, data_fraud: DataFrame) -> DataFrame:
-        data_fraud['device_id_count'] = data_fraud.groupby('device_id')['device_id'].transform('count')
-        return data_fraud
-
-    def _country_count(self, data_fraud: DataFrame) -> DataFrame:
-        data_fraud['country_count'] = data_fraud.groupby('country')['country'].transform('count')
-        return data_fraud
-
     def _drop_clean_data(self, data_fraud: DataFrame) -> DataFrame:
-        columns_drop = ['signup_time', 'purchase_time', 'device_id', 'time_difference', 'ip_address', 'country']
+        columns_drop = ['signup_time', 'purchase_time', 'time_difference', 'ip_address']
         data_fraud = data_fraud.drop(columns_drop, axis=1)
         dependent_variable = 'class'
         data_fraud = data_fraud[[col for col in data_fraud.columns if col != dependent_variable] + [dependent_variable]]
@@ -88,10 +81,9 @@ class Feature_Creation:
         data_country = self._replace_Ip_country(data_fraud, data_ip)
         data_time = self._time_differences(data_country)
         data_purchase = self._purchase_time(data_time)
-        data_freq = self._device_id_count(data_purchase)
-
-        data_country_count = self._country_count(data_freq)
-        final_data = self._drop_clean_data(data_country_count)
+        #data_freq = self._device_id_count(data_purchase)
+        #data_country_count = self._country_count(data_freq)
+        final_data = self._drop_clean_data(data_purchase)
 
         return final_data
 
@@ -103,7 +95,6 @@ if __name__ == '__main__':
     final_url = os.path.join(os.getcwd(), "EFraud_data.csv")
     features = Feature_Creation(data_path, ip_path)
     final_data = features.process_data()
-    print(final_url)
     final_data.to_csv(final_url, index=False)
 
 

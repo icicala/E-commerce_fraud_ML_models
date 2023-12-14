@@ -1,4 +1,5 @@
 import os
+import joblib
 import pandas as pd
 from pandas import DataFrame
 from sklearn.ensemble import RandomForestClassifier
@@ -6,7 +7,8 @@ from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.model_selection import train_test_split
 from imblearn.over_sampling import SMOTE
 from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score, f1_score
-
+from sklearn.preprocessing import LabelEncoder
+import category_encoders as ce
 
 class RandomForestModel():
     def __init__(self, data_url):
@@ -18,24 +20,16 @@ class RandomForestModel():
 
     def _categorical_feature_encoding(self, data) -> DataFrame:
         data_c = data.copy()
-        categorical_columns = ['source', 'browser', 'sex']
-        onehot_encoder = OneHotEncoder(drop='first', sparse_output=False)
-        data_encoded = pd.DataFrame(onehot_encoder.fit_transform(data_c[categorical_columns]))
-        data_c = pd.concat([data_c, data_encoded], axis=1)
-        data_c.drop(categorical_columns, axis=1, inplace=True)
-        dependent_variable = 'class'
-        data_c = data_c[[col for col in data_c.columns if col != dependent_variable] + [dependent_variable]]
-        return data_c
+        categorical_columns = ['source', 'browser', 'sex', 'country', 'device_id']
+        binary_encoder = ce.BinaryEncoder(cols=categorical_columns)
+        data_encoded = binary_encoder.fit_transform(data_c)
+        return data_encoded
 
     def _preprocess_data(self, data: DataFrame):
         # data split
         X = data.drop(['class'], axis=1)
         y = data['class']
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=7)
-
-        # fix the int column name error
-        X_train.columns = X_train.columns.astype(str)
-        X_test.columns = X_test.columns.astype(str)
 
         # SMOTE
         smote = SMOTE(random_state=7)
@@ -75,9 +69,13 @@ class RandomForestModel():
         classifier = self._train_model(X_train_resampl, y_train_resampl)
         y_pred = self._prediction(classifier, X_test)
         self._evaluate_model(y_test, y_pred)
+        # save the model
+        joblib.dump(classifier, 'RFC_model.joblib')
+
 
 
 if __name__ == '__main__':
-    url = os.path.join(os.getcwd(), "EFraud_data.csv")
-    data = RandomForestModel(url)
+    data_pwd = os.path.join(os.getcwd(), "EFraud_data.csv")
+    data = RandomForestModel(data_pwd)
     data.create_model()
+
