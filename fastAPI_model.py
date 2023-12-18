@@ -1,10 +1,6 @@
-import json
-
-import requests
 import pandas as pd
 from fastapi import FastAPI
 import joblib
-import numpy as np
 from pandas import DataFrame
 from pydantic import BaseModel
 
@@ -58,5 +54,4 @@ def predict(data: FraudData):
     original_data = pd.DataFrame([data.model_dump()])
     original_data['class'] = prediction
     dict_data = original_data.to_dict(orient='records')[0]
-
     return dict_data

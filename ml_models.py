@@ -7,7 +7,6 @@ from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.model_selection import train_test_split
 from imblearn.over_sampling import ADASYN
 from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score, f1_score
-from sklearn.preprocessing import LabelEncoder
 import category_encoders as ce
 
 class RandomForestModel():
