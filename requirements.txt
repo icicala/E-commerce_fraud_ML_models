@@ -1,8 +1,9 @@
-pandas==2.1.3
+pandas==2.1.4
 intervaltree==3.1.0
 scikit-learn==1.3.2
 joblib==1.2.0
 pydantic==2.5.2
 fastapi==0.105.0
+uvicorn
 imbalanced-learn
 category_encoders
