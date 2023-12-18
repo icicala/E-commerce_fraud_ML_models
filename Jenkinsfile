@@ -28,5 +28,13 @@ pipeline {
                 }
             }
         }
+
+        stage('Build Docker Container') {
+            steps {
+                script {
+                    sh 'docker build -t fastapi-app -f Dockerfile .'
+                }
+            }
+        }
     }
 }
