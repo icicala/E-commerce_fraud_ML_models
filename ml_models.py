@@ -5,7 +5,7 @@ from pandas import DataFrame
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.model_selection import train_test_split
-from imblearn.over_sampling import SMOTE
+from imblearn.over_sampling import ADASYN
 from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score, f1_score
 from sklearn.preprocessing import LabelEncoder
 import category_encoders as ce
@@ -18,28 +18,27 @@ class RandomForestModel():
         data = pd.read_csv(url)
         return data.copy()
 
-    def _categorical_feature_encoding(self, data) -> DataFrame:
-        data_c = data.copy()
-        categorical_columns = ['source', 'browser', 'sex', 'country', 'device_id']
-        binary_encoder = ce.BinaryEncoder(cols=categorical_columns)
-        data_encoded = binary_encoder.fit_transform(data_c)
-        return data_encoded
-
     def _preprocess_data(self, data: DataFrame):
         # data split
         X = data.drop(['class'], axis=1)
         y = data['class']
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=7)
 
+        # Perform categorical encoding after splitting the data
+        categorical_columns = ['source', 'browser', 'sex', 'country', 'device_id']
+        binary_encoder = ce.BinaryEncoder(cols=categorical_columns)
+        X_train_encoded = binary_encoder.fit_transform(X_train)
+        X_test_encoded = binary_encoder.transform(X_test)
+
         # SMOTE
-        smote = SMOTE(random_state=7)
-        X_train_resampl, y_train_resampl = smote.fit_resample(X_train, y_train)
+        adasyn = ADASYN(random_state=7)
+        X_train_resampl, y_train_resampl = adasyn.fit_resample(X_train_encoded, y_train)
 
         # feature scaling
         sc = StandardScaler()
         X_train_resampl = sc.fit_transform(X_train_resampl)
-        X_test = sc.transform(X_test)
-        return X_train_resampl, X_test, y_train_resampl, y_test
+        X_test = sc.transform(X_test_encoded)
+        return X_train_resampl, X_test, y_train_resampl, y_test, binary_encoder
 
     def _train_model(self, X_train, y_train):
         classifier = RandomForestClassifier(n_estimators=100, criterion='entropy', random_state=7)
@@ -64,16 +63,13 @@ class RandomForestModel():
 
     def create_model(self):
         data = self._load_data(self.data_url)
-        encoded_data = self._categorical_feature_encoding(data)
-        X_train_resampl, X_test, y_train_resampl, y_test = self._preprocess_data(encoded_data)
+        X_train_resampl, X_test, y_train_resampl, y_test, binary_encoder = self._preprocess_data(data)
         classifier = self._train_model(X_train_resampl, y_train_resampl)
         y_pred = self._prediction(classifier, X_test)
         self._evaluate_model(y_test, y_pred)
         # save the model
         joblib.dump(classifier, 'RFC_model.joblib')
-
-
-
+        joblib.dump(binary_encoder, 'binary_encoder.joblib')
 if __name__ == '__main__':
     data_pwd = os.path.join(os.getcwd(), "EFraud_data.csv")
     data = RandomForestModel(data_pwd)
