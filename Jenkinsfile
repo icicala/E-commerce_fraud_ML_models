@@ -6,10 +6,10 @@ pipeline {
         }
     }
     stages {
-        stage('Build Docker Container ps') {
+        stage('Build Docker Container') {
             steps {
                 script {
-                    sh 'docker ps'
+                    sh 'docker build -t fastapi-app -f Dockerfile .'
                 }
             }
         }
