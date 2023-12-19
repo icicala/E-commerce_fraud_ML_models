@@ -13,6 +13,7 @@ pipeline {
                     withEnv(["PATH=/usr/bin:$PATH"]) {
                         sh 'docker ps'
                     }
+                }
             }
         }
     }
