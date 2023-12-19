@@ -1,15 +1,10 @@
 pipeline {
-    agent {
-        docker {
-            image 'python:3.11'
-            args '-u root -v /var/run/docker.sock:/var/run/docker.sock'
-        }
-    }
+    agent any // Runs on any available agent in the Jenkins environment
     stages {
         stage('Verify Docker Path') {
             steps {
                 script {
-                    sh '/usr/bin/docker ps'
+                    sh 'docker ps'
                 }
             }
         }
