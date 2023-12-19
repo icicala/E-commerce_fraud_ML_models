@@ -9,10 +9,7 @@ pipeline {
         stage('Verify Docker Path') {
             steps {
                 script {
-                    // Update the PATH variable within the pipeline
-                    withEnv(["PATH=/usr/bin:$PATH"]) {
-                        sh 'docker ps'
-                    }
+                    sh '/usr/bin/docker ps'
                 }
             }
         }
