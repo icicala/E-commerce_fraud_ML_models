@@ -34,7 +34,7 @@ pipeline {
 
     post {
         always {
-            // Clean up or other tasks to execute irrespective of earlier stages' success/failure
+            sh 'echo Hallo'
         }
         success {
             // Build FastAPI Docker Image only on successful completion of earlier stages
