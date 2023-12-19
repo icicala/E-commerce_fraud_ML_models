@@ -2,7 +2,7 @@ pipeline {
     agent {
         docker {
             image 'python:3.11'
-            args '-u root' // Define a single agent for the initial stages
+            args '-u root'
         }
     }
     stages {
@@ -30,18 +30,5 @@ pipeline {
             }
         }
 
-        stage('Build Docker Container') {
-            agent {
-                docker {
-                    image 'docker:20.10'
-                    args '-u root -v /var/run/docker.sock:/var/run/docker.sock'
-                }
-            }
-            steps {
-                script {
-                    sh 'docker ps'
-                }
-            }
-        }
     }
 }
