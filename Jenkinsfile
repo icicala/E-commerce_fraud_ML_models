@@ -27,6 +27,7 @@ pipeline {
             steps {
                 script {
                     sh 'docker build -t fastapi-app -f Dockerfile .'
+                    sh 'docker run -d -p 8000:8000 fastapi-app'
                 }
             }
         }
