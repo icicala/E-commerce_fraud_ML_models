@@ -29,7 +29,13 @@ pipeline {
             }
         }
 
-        stage('Build Docker Container') {
+        stage('Build FastAPI Docker Image') {
+            agent {
+                docker {
+                    image 'docker:20.10' // Use Docker CLI image for building Docker images
+                    args '-u root -v /var/run/docker.sock:/var/run/docker.sock'
+                }
+            }
             steps {
                 script {
                     sh 'docker build -t fastapi-app -f Dockerfile .'
