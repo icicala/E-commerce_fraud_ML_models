@@ -9,9 +9,10 @@ pipeline {
         stage('Verify Docker Path') {
             steps {
                 script {
-                    sh 'echo $PATH' // Print the current PATH variable
-                    sh 'which docker' // Check the location of the 'docker' executable
-                }
+                    // Update the PATH variable within the pipeline
+                    withEnv(["PATH=/usr/bin:$PATH"]) {
+                        sh 'docker ps'
+                    }
             }
         }
     }
