@@ -6,34 +6,11 @@ pipeline {
         }
     }
     stages {
-        stage('Install ML Libraries') {
+        stage('Verify Docker Path') {
             steps {
                 script {
-                    sh 'pip3 install -r requirements.txt --user'
-                }
-            }
-        }
-
-        stage('Feature Creation') {
-            steps {
-                script {
-                    sh 'python3 feature_creation.py'
-                }
-            }
-        }
-
-        stage('ML Model creation') {
-            steps {
-                script {
-                    sh 'python3 ml_models.py'
-                }
-            }
-        }
-
-        stage('Build FastAPI Docker Image') {
-            steps {
-                script {
-                    sh 'docker build -t fastapi-app -f Dockerfile .'
+                    sh 'echo $PATH' // Print the current PATH variable
+                    sh 'which docker' // Check the location of the 'docker' executable
                 }
             }
         }
