@@ -1,8 +1,8 @@
 pipeline {
-    agent none // Define no default agent
+    agent none
 
     stages {
-        stage('Python Execution') {
+        stage('Install ML Libraries') {
             agent {
                 docker {
                     image 'python:3.11'
@@ -11,24 +11,49 @@ pipeline {
             }
             steps {
                 script {
-                    // Your Python script execution steps
-                    sh 'python3 --version'
-
+                    sh 'pip3 install -r requirements.txt --user'
                 }
             }
         }
 
-        stage('Docker CLI Execution') {
+        stage('Feature Creation') {
             agent {
                 docker {
-                    image 'docker:20.10' // Or any other image with Docker installed
+                    image 'python:3.11'
+                    args '-u root'
+                }
+            }
+            steps {
+                script {
+                    sh 'python3 feature_creation.py'
+                }
+            }
+        }
+
+        stage('ML Model creation') {
+            agent {
+                docker {
+                    image 'python:3.11'
+                    args '-u root'
+                }
+            }
+            steps {
+                script {
+                    sh 'python3 ml_models.py'
+                }
+            }
+        }
+
+        stage('Build FastAPI Docker Image') {
+            agent {
+                docker {
+                    image 'docker:20.10'
                     args '-u root -v /var/run/docker.sock:/var/run/docker.sock'
                 }
             }
             steps {
                 script {
-                    // Your Docker CLI commands here
-                    sh 'docker ps'
+                    sh 'docker build -t fastapi-app -f Dockerfile .'
                 }
             }
         }
