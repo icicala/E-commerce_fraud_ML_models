@@ -6,7 +6,7 @@ pipeline {
         }
     }
     stages {
-        stage('Build Docker Container') {
+        stage('Build Docker Container ps') {
             steps {
                 script {
                     sh 'docker ps'
